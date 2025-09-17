@@ -94,8 +94,8 @@ export const MediaUpload = ({
       formData.append('file', file);
 
       const baseUrl = import.meta.env.DEV 
-        ? 'http://localhost:5001' 
-        : '';
+        ? 'https://blogs-backend-ebon.vercel.app/' 
+        : 'https://blogs-backend-ebon.vercel.app/';
         
       let endpoint = `${baseUrl}/api/v1/media/upload-blog-media`;
       if (file.type.startsWith('image/')) {

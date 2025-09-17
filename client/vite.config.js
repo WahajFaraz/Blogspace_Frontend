@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => {
         env.VITE_API_BASE_URL || 
         (isProduction 
           ? 'http://localhost:5173/'
-          : 'https://blogspace-website-git-master-wahaj-farazs-projects.vercel.app/')
+          : 'https://blogs-backend-ebon.vercel.app/')
       )
     },
     plugins: [

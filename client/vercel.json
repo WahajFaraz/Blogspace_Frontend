@@ -27,5 +27,18 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "devCommand": "vite --port $PORT",
-  "installCommand": "npm install --force"
+  "installCommand": "npm install --force",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
 }

@@ -1,6 +1,10 @@
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import { existsSync, mkdirSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 console.log('Starting Vercel build process...');
 
@@ -28,14 +32,14 @@ try {
 console.log('Creating _redirects file...');
 try {
   const redirectsContent = '/* /index.html 200';
-  const distPath = path.join(process.cwd(), 'dist');
+  const distPath = join(process.cwd(), 'dist');
   
   // Ensure dist directory exists
-  if (!fs.existsSync(distPath)) {
-    fs.mkdirSync(distPath, { recursive: true });
+  if (!existsSync(distPath)) {
+    mkdirSync(distPath, { recursive: true });
   }
   
-  fs.writeFileSync(path.join(distPath, '_redirects'), redirectsContent);
+  writeFileSync(join(distPath, '_redirects'), redirectsContent);
   console.log('_redirects file created successfully');
 } catch (error) {
   console.error('Error creating _redirects file:', error);
