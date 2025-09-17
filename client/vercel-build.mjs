@@ -10,13 +10,17 @@ const log = (message) => {
   console.log(`[${new Date().toISOString()}] ${message}`);
 };
 
-const runCommand = (command, errorMessage) => {
+const runCommand = (command, errorMessage, options = {}) => {
   try {
     log(`Running: ${command}`);
-    execSync(command, { stdio: 'inherit' });
+    execSync(command, { 
+      stdio: 'inherit',
+      shell: '/bin/bash',
+      ...options
+    });
     return true;
   } catch (error) {
-    console.error(`❌ ${errorMessage}:`, error);
+    console.error(`❌ ${errorMessage}:`, error.message);
     return false;
   }
 };
@@ -24,10 +28,20 @@ const runCommand = (command, errorMessage) => {
 async function main() {
   log('🚀 Starting Vercel build process...');
 
-  // Install dependencies
+  // Install dependencies with explicit Vite installation
   log('📦 Installing dependencies...');
-  if (!runCommand('npm install --force', 'Error installing dependencies')) {
-    process.exit(1);
+  const installCommands = [
+    'npm install -g npm@latest',
+    'npm install --force',
+    'npm install -g vite',
+    'npm install --save-dev vite@latest',
+    'npm rebuild'
+  ];
+
+  for (const cmd of installCommands) {
+    if (!runCommand(cmd, `Error running: ${cmd}`, { cwd: process.cwd() })) {
+      process.exit(1);
+    }
   }
 
   // Run the build
