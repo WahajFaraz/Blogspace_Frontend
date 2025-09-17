@@ -6,44 +6,62 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-console.log('Starting Vercel build process...');
+const log = (message) => {
+  console.log(`[${new Date().toISOString()}] ${message}`);
+};
 
-// Install dependencies
-console.log('Installing dependencies...');
-try {
-  execSync('npm install --force', { stdio: 'inherit' });
-  console.log('Dependencies installed successfully');
-} catch (error) {
-  console.error('Error installing dependencies:', error);
-  process.exit(1);
-}
-
-// Run the build
-console.log('Running build...');
-try {
-  execSync('npm run build', { stdio: 'inherit' });
-  console.log('Build completed successfully');
-} catch (error) {
-  console.error('Error during build:', error);
-  process.exit(1);
-}
-
-// Create a _redirects file for client-side routing
-console.log('Creating _redirects file...');
-try {
-  const redirectsContent = '/* /index.html 200';
-  const distPath = join(process.cwd(), 'dist');
-  
-  // Ensure dist directory exists
-  if (!existsSync(distPath)) {
-    mkdirSync(distPath, { recursive: true });
+const runCommand = (command, errorMessage) => {
+  try {
+    log(`Running: ${command}`);
+    execSync(command, { stdio: 'inherit' });
+    return true;
+  } catch (error) {
+    console.error(`❌ ${errorMessage}:`, error);
+    return false;
   }
-  
-  writeFileSync(join(distPath, '_redirects'), redirectsContent);
-  console.log('_redirects file created successfully');
-} catch (error) {
-  console.error('Error creating _redirects file:', error);
-  process.exit(1);
+};
+
+async function main() {
+  log('🚀 Starting Vercel build process...');
+
+  // Install dependencies
+  log('📦 Installing dependencies...');
+  if (!runCommand('npm install --force', 'Error installing dependencies')) {
+    process.exit(1);
+  }
+
+  // Run the build
+  log('🔨 Building application...');
+  if (!runCommand('npm run build', 'Error during build')) {
+    process.exit(1);
+  }
+
+  // Create _redirects file for client-side routing
+  log('📝 Creating _redirects file...');
+  try {
+    const distPath = join(process.cwd(), 'dist');
+    
+    // Ensure dist directory exists
+    if (!existsSync(distPath)) {
+      log('ℹ️ Creating dist directory...');
+      mkdirSync(distPath, { recursive: true });
+    }
+    
+    const redirectsPath = join(distPath, '_redirects');
+    const redirectsContent = '/* /index.html 200';
+    
+    writeFileSync(redirectsPath, redirectsContent);
+    log('✅ _redirects file created successfully');
+  } catch (error) {
+    console.error('❌ Error creating _redirects file:', error);
+    process.exit(1);
+  }
+
+  log('🎉 Vercel build process completed successfully!');
 }
 
-console.log('Vercel build process completed successfully!');
+// Run the main function
+main().catch(error => {
+  console.error('❌ Unhandled error in build process:', error);
+  process.exit(1);
+});
