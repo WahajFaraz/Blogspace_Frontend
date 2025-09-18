@@ -58,26 +58,29 @@ const api = {
 
   // Blog endpoints
   getBlogs: async (params = '') => {
-    // Ensure base URL doesn't have trailing slashes
-    const baseUrl = API_BASE_URL.replace(/\/+$/, '');
+    // Create a clean base URL without trailing slashes
+    const cleanBaseUrl = API_BASE_URL.replace(/\/+$/, '');
     
-    // Ensure endpoint starts with exactly one slash
-    const endpoint = 'blogs';
+    // Create URL with proper path handling
+    const url = new URL(cleanBaseUrl);
     
-    // Construct the full URL
-    const fullUrl = new URL(endpoint, baseUrl);
+    // Set the pathname (this will handle the /api/v1 part correctly)
+    url.pathname = `${url.pathname.replace(/\/+$/, '')}/blogs`;
     
     // Parse and add query parameters if any
     if (params) {
       const searchParams = new URLSearchParams(params.startsWith('?') ? params.slice(1) : params);
       searchParams.forEach((value, key) => {
-        fullUrl.searchParams.append(key, value);
+        url.searchParams.append(key, value);
       });
     }
     
-    console.log('Fetching blogs from:', fullUrl.toString());
+    // Ensure we don't have double slashes in the final URL
+    const finalUrl = url.toString().replace(/([^:]\/)\/+/g, '$1');
     
-    const response = await fetch(fullUrl, {
+    console.log('Fetching blogs from:', finalUrl);
+    
+    const response = await fetch(finalUrl, {
       method: 'GET',
       credentials: 'include',
       headers: {
