@@ -189,30 +189,40 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app'
-        : '';
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app';
+      const currentToken = token || localStorage.getItem('token');
       
-      // Clear local state first
+      try {
+        // Call server-side logout
+        const response = await fetch(`${baseUrl}/logout`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Authorization': currentToken ? `Bearer ${currentToken}` : '',
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          console.error('Logout failed:', await response.text().catch(() => 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Error during logout request:', error);
+        // Continue with local logout even if server logout fails
+      } finally {
+        // Clear local state
+        setUser(null);
+        setToken(null);
+        setError(null);
+        localStorage.removeItem('token');
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Unexpected error during logout:', error);
+      // Ensure we still clear local state and navigate
       setUser(null);
       setToken(null);
-      setError(null);
       localStorage.removeItem('token');
-      
-      // Call server-side logout if needed (optional)
-      await fetch(`${baseUrl}/api/v1/users/logout`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      }).catch(console.error); // Don't fail if logout endpoint fails
-      
-      navigate('/');
-    } catch (error) {
-      console.error('Logout error:', error);
-      // Still navigate to home even if logout fails
       navigate('/');
     }
   };
