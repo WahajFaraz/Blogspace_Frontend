@@ -61,22 +61,19 @@ const api = {
     // Create a clean base URL without trailing slashes
     const cleanBaseUrl = API_BASE_URL.replace(/\/+$/, '');
     
-    // Create URL with proper path handling
-    const url = new URL(cleanBaseUrl);
-    
-    // Set the pathname (this will handle the /api/v1 part correctly)
-    url.pathname = `${url.pathname.replace(/\/+$/, '')}/blogs`;
+    // Create the full URL with proper path handling
+    const fullUrl = new URL('/blogs', cleanBaseUrl);
     
     // Parse and add query parameters if any
     if (params) {
       const searchParams = new URLSearchParams(params.startsWith('?') ? params.slice(1) : params);
       searchParams.forEach((value, key) => {
-        url.searchParams.append(key, value);
+        fullUrl.searchParams.append(key, value);
       });
     }
     
-    // Ensure we don't have double slashes in the final URL
-    const finalUrl = url.toString().replace(/([^:]\/)\/+/g, '$1');
+    // Final URL cleanup to ensure no double slashes
+    const finalUrl = fullUrl.toString().replace(/([^:]\/)\/+/g, '$1');
     
     console.log('Fetching blogs from:', finalUrl);
     
