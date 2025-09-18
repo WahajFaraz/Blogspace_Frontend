@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import BlogCard from "./BlogCard";
+import api from "../lib/api";
 
 const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 'all', sort: 'newest' } }) => {
   const [blogs, setBlogs] = useState(initialBlogs || []);
@@ -17,21 +18,10 @@ const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 
       if (searchFilters.category && searchFilters.category !== 'all') params.append('category', searchFilters.category);
       if (searchFilters.sort) params.append('sort', searchFilters.sort);
       
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app/api/v1';
-      const queryString = params.toString() ? `?${params.toString()}` : '';
-      const url = `${baseUrl}/blogs${queryString}`;
+      const queryString = params.toString();
+      console.log('Fetching blogs with params:', queryString); // Debug log
       
-      console.log('Fetching blogs from:', url); // Debug log
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Accept': 'application/json'
-        }
-      });
-      
-      console.log('Response status:', response.status); // Debug log
+      const response = await api.getBlogs(`?${queryString}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch blogs');
