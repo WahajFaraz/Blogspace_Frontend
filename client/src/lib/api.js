@@ -5,31 +5,52 @@ const api = {
   login: (credentials) => 
     fetch(`${API_BASE_URL}/users/login`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
       body: JSON.stringify(credentials)
     }),
 
   register: (userData) => 
     fetch(`${API_BASE_URL}/users/register`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      credentials: 'include',
       body: JSON.stringify(userData)
     }),
 
   // Blog endpoints
   getBlogs: (params = '') => 
-    fetch(`${API_BASE_URL}/blogs${params}`),
+    fetch(`${API_BASE_URL}/blogs${params}`, {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }),
 
   getBlog: (id) => 
-    fetch(`${API_BASE_URL}/blogs/${id}`),
+    fetch(`${API_BASE_URL}/blogs/${id}`, {
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json'
+      }
+    }),
 
   createBlog: (blogData, token) => 
     fetch(`${API_BASE_URL}/blogs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
       body: JSON.stringify(blogData)
     }),
 
@@ -38,8 +59,10 @@ const api = {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         'Authorization': `Bearer ${token}`
       },
+      credentials: 'include',
       body: JSON.stringify(blogData)
     }),
 
@@ -47,25 +70,32 @@ const api = {
     fetch(`${API_BASE_URL}/blogs/${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      credentials: 'include'
     }),
 
   // User endpoints
   getCurrentUser: (token) => 
     fetch(`${API_BASE_URL}/users/me`, {
       headers: {
-        'Authorization': `Bearer ${token}`
-      }
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include'
     }),
 
   // Media upload
-  uploadMedia: (formData, token) =>
+  uploadMedia: (formData, token) => 
     fetch(`${API_BASE_URL}/media/upload`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
       },
+      credentials: 'include',
       body: formData
     })
 };
