@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
       'process.env': {},
       'import.meta.env': {
         ...env,
-        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app/')
+        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
       }
     },
     plugins: [
