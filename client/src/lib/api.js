@@ -2,11 +2,17 @@ import { API_BASE_URL } from './config';
 
 // Helper function to create a properly formatted URL
 const createApiUrl = (path) => {
-  // Remove any leading/trailing slashes from the base URL and path
-  const base = API_BASE_URL.replace(/\/+$/, '');
+  // Remove any trailing slashes from base URL and leading slashes from path
+  const cleanBase = API_BASE_URL.replace(/\/+$/, '');
   const cleanPath = path.replace(/^\/+/, '');
   
-  return `${base}/${cleanPath}`;
+  // Construct the URL parts
+  const urlParts = [cleanBase, 'api/v1', cleanPath]
+    .filter(Boolean) // Remove any empty parts
+    .join('/'); // Join with single slashes
+  
+  // Ensure we don't have any double slashes in the final URL
+  return urlParts.replace(/([^:])\/\//g, '$1/');
 };
 
 const api = {
@@ -53,18 +59,23 @@ const api = {
 
   // Blog endpoints
   getBlogs: async (params = '') => {
-    let url = createApiUrl('api/v1/blogs');
-
+    // Create the base URL without query parameters
+    const baseUrl = createApiUrl('blogs');
+    const url = new URL(baseUrl);
+    
+    // Add query parameters if any
     if (params) {
       const searchParams = new URLSearchParams(
         params.startsWith('?') ? params.slice(1) : params
       );
-      url += `?${searchParams.toString()}`;
+      searchParams.forEach((value, key) => {
+        url.searchParams.append(key, value);
+      });
     }
 
-    console.log('Fetching blogs from:', url);
+    console.log('Fetching blogs from:', url.toString());
 
-    const response = await fetch(url, {
+    const response = await fetch(url.toString(), {
       method: 'GET',
       credentials: 'include',
       headers: {
