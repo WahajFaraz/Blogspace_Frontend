@@ -25,14 +25,22 @@ const api = {
     }),
 
   // Blog endpoints
-  getBlogs: (params = '') => 
-    fetch(`${API_BASE_URL}/blogs${params}`, {
+  getBlogs: async (params = '') => {
+    const response = await fetch(`${API_BASE_URL}/blogs${params}`, {
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to fetch blogs');
+    }
+    
+    return response;
+  },
 
   getBlog: (id) => 
     fetch(`${API_BASE_URL}/blogs/${id}`, {
