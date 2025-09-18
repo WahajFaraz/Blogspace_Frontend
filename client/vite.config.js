@@ -76,6 +76,40 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
+      emptyOutDir: true,
+      sourcemap: !isProduction,
+      chunkSizeWarningLimit: 1000,
+      commonjsOptions: {
+        include: [/node_modules/],
+        transformMixedEsModules: true,
+        esmExternals: true,
+        requireReturnsDefault: 'auto'
+      },
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              if (id.includes('@radix-ui')) {
+                return 'radix';
+              }
+              if (id.includes('framer-motion')) {
+                return 'framer';
+              }
+              return 'vendor';
+            }
+          },
+          entryFileNames: 'assets/[name]-[hash].js',
+          chunkFileNames: 'assets/[name]-[hash].js',
+          assetFileNames: (assetInfo) => {
+            const info = assetInfo.name.split('.');
+            const ext = info[info.length - 1];
+            if (ext === 'css') {
+              return `assets/[name]-[hash].${ext}`;
+            }
+            return 'assets/[name]-[hash][extname]';
+          },
+        },
+      },
       sourcemap: !isProduction,
       chunkSizeWarningLimit: 1000,
       commonjsOptions: {
