@@ -55,8 +55,8 @@ const EditPost = () => {
       setError(null);
       
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
-        : 'https://blogs-backend-ebon.vercel.app/';
+        ? 'https://blogs-backend-ebon.vercel.app'
+        : 'https://blogs-backend-ebon.vercel.app';
       
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
         headers: {
@@ -212,8 +212,8 @@ const EditPost = () => {
 
     try {
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
-        : 'https://blogs-backend-ebon.vercel.app/';
+        ? 'https://blogs-backend-ebon.vercel.app'
+        : 'https://blogs-backend-ebon.vercel.app';
       
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
         method: 'PUT',
