@@ -193,8 +193,8 @@ export const AuthProvider = ({ children }) => {
       const currentToken = token || localStorage.getItem('token');
       
       try {
-        // Call server-side logout
-        const response = await fetch(`${baseUrl}/logout`, {
+        // Call server-side logout with the full path
+        const response = await fetch(`${baseUrl}/api/v1/users/logout`, {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -204,7 +204,8 @@ export const AuthProvider = ({ children }) => {
         });
 
         if (!response.ok) {
-          console.error('Logout failed:', await response.text().catch(() => 'Unknown error'));
+          const errorText = await response.text().catch(() => 'Unknown error');
+          console.error('Logout failed:', errorText);
         }
       } catch (error) {
         console.error('Error during logout request:', error);
