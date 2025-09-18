@@ -6,18 +6,13 @@ const createApiUrl = (path) => {
   const base = API_BASE_URL.replace(/\/+$/, '');
   const cleanPath = path.replace(/^\/+/, '');
   
-  // Check if the base already includes the path to avoid duplication
-  if (base.endsWith(cleanPath)) {
-    return base;
-  }
-  
   return `${base}/${cleanPath}`;
 };
 
 const api = {
   // Auth endpoints
   login: async (credentials) => {
-    const response = await fetch(createApiUrl('/api/v1/users/login'), {
+    const response = await fetch(createApiUrl('api/v1/users/login'), {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -37,7 +32,7 @@ const api = {
   },
 
   register: async (userData) => {
-    const response = await fetch(createApiUrl('/api/v1/users/register'), {
+    const response = await fetch(createApiUrl('api/v1/users/register'), {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -58,26 +53,18 @@ const api = {
 
   // Blog endpoints
   getBlogs: async (params = '') => {
-    // Create a clean base URL without trailing slashes
-    const cleanBaseUrl = API_BASE_URL.replace(/\/+$/, '');
-    
-    // Create the full URL with proper path handling
-    const fullUrl = new URL('/blogs', cleanBaseUrl);
-    
-    // Parse and add query parameters if any
+    let url = createApiUrl('api/v1/blogs');
+
     if (params) {
-      const searchParams = new URLSearchParams(params.startsWith('?') ? params.slice(1) : params);
-      searchParams.forEach((value, key) => {
-        fullUrl.searchParams.append(key, value);
-      });
+      const searchParams = new URLSearchParams(
+        params.startsWith('?') ? params.slice(1) : params
+      );
+      url += `?${searchParams.toString()}`;
     }
-    
-    // Final URL cleanup to ensure no double slashes
-    const finalUrl = fullUrl.toString().replace(/([^:]\/)\/+/g, '$1');
-    
-    console.log('Fetching blogs from:', finalUrl);
-    
-    const response = await fetch(finalUrl, {
+
+    console.log('Fetching blogs from:', url);
+
+    const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -96,7 +83,7 @@ const api = {
   },
 
   getBlog: (id) => 
-    fetch(createApiUrl(`/api/v1/blogs/${id}`), {
+    fetch(createApiUrl(`api/v1/blogs/${id}`), {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -107,7 +94,7 @@ const api = {
     }),
 
   createBlog: async (blogData, token) => {
-    const response = await fetch(createApiUrl('/api/v1/blogs'), {
+    const response = await fetch(createApiUrl('api/v1/blogs'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -128,7 +115,7 @@ const api = {
   },
 
   updateBlog: async (id, blogData, token) => {
-    const response = await fetch(createApiUrl(`/api/v1/blogs/${id}`), {
+    const response = await fetch(createApiUrl(`api/v1/blogs/${id}`), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -149,7 +136,7 @@ const api = {
   },
 
   deleteBlog: async (id, token) => {
-    const response = await fetch(createApiUrl(`/api/v1/blogs/${id}`), {
+    const response = await fetch(createApiUrl(`api/v1/blogs/${id}`), {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -170,7 +157,7 @@ const api = {
 
   // User endpoints
   getCurrentUser: async (token) => {
-    const response = await fetch(createApiUrl('/api/v1/users/me'), {
+    const response = await fetch(createApiUrl('api/v1/users/me'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -191,7 +178,7 @@ const api = {
 
   // Media upload
   uploadMedia: async (formData, token) => {
-    const response = await fetch(createApiUrl('/api/v1/media/upload'), {
+    const response = await fetch(createApiUrl('api/v1/media/upload'), {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
