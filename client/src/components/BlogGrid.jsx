@@ -1,15 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import BlogCard from "./BlogCard";
 import api from "../lib/api";
+
+// Simple wrapper to track if component is mounted
+const useIsMounted = () => {
+  const isMounted = useRef(false);
+  
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    };
+  }, []);
+  
+  return isMounted;
+};
 
 const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 'all', sort: 'newest' } }) => {
   const [blogs, setBlogs] = useState(initialBlogs || []);
   const [loading, setLoading] = useState(!initialBlogs);
   const [searchQuery, setSearchQuery] = useState("");
+  const [initialLoad, setInitialLoad] = useState(true);
   const location = useLocation();
+  const isMounted = useIsMounted();
 
   const fetchBlogs = async () => {
+    // Skip initial fetch if we have initialBlogs
+    if (initialLoad && initialBlogs) {
+      setInitialLoad(false);
+      return;
+    }
+
     try {
       setLoading(true);
       
@@ -19,9 +41,11 @@ const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 
       if (searchFilters.sort) params.append('sort', searchFilters.sort);
       
       const queryString = params.toString();
-      console.log('Fetching blogs with params:', queryString); // Debug log
+      console.log('Fetching blogs with params:', queryString);
       
-      const response = await api.getBlogs(`?${queryString}`);
+      const response = await api.getBlogs(queryString ? `?${queryString}` : '');
+      
+      if (!isMounted.current) return;
       
       if (!response.ok) {
         throw new Error('Failed to fetch blogs');
@@ -41,8 +65,10 @@ const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 
   };
 
   useEffect(() => {
-    if (initialBlogs) {
+    // Skip if we have initialBlogs and it's the first render
+    if (initialBlogs && initialLoad) {
       setBlogs(initialBlogs);
+      setInitialLoad(false);
       setLoading(false);
       return;
     }
@@ -51,8 +77,19 @@ const BlogGrid = ({ blogs: initialBlogs, searchFilters = { query: '', category: 
     const search = urlParams.get('search') || '';
     setSearchQuery(search);
     
-    fetchBlogs();
-  }, [location.search, searchFilters, initialBlogs]);
+    // Only fetch if we don't have initialBlogs or it's not the first render
+    if (!initialBlogs || !initialLoad) {
+      fetchBlogs();
+    }
+  }, [location.search, searchFilters, initialBlogs, initialLoad]);
+  
+  // Cleanup function to prevent state updates after unmount
+  useEffect(() => {
+    return () => {
+      setBlogs([]);
+      setLoading(true);
+    };
+  }, []);
 
   if (loading) {
                   return (
