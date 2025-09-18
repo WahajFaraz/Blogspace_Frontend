@@ -1,7 +1,6 @@
 import { execSync } from 'child_process';
-import { existsSync, mkdirSync, writeFileSync } from 'fs';
-import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -15,7 +14,6 @@ const runCommand = (command, errorMessage, options = {}) => {
     log(`Running: ${command}`);
     execSync(command, { 
       stdio: 'inherit',
-      shell: '/bin/bash',
       ...options
     });
     return true;
@@ -27,26 +25,16 @@ const runCommand = (command, errorMessage, options = {}) => {
 
 async function main() {
   log('🚀 Starting Vercel build process...');
-
-  // Install dependencies with explicit Vite installation
+  
+  // Install production dependencies only
   log('📦 Installing dependencies...');
-  const installCommands = [
-    'npm install -g npm@latest',
-    'npm install --force',
-    'npm install -g vite',
-    'npm install --save-dev vite@latest',
-    'npm rebuild'
-  ];
-
-  for (const cmd of installCommands) {
-    if (!runCommand(cmd, `Error running: ${cmd}`, { cwd: process.cwd() })) {
-      process.exit(1);
-    }
+  if (!runCommand('npm ci --prefer-offline --no-audit', 'Error installing dependencies')) {
+    process.exit(1);
   }
 
   // Run the build
   log('🔨 Building application...');
-  if (!runCommand('npm run build', 'Error during build')) {
+  if (!runCommand('vite build --mode production', 'Error during build')) {
     process.exit(1);
   }
 

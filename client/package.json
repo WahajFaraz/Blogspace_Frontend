@@ -13,11 +13,9 @@
     "preview:prod": "vite preview --port 4173 --host",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
-    "postinstall": "npm rebuild && vite build",
-    "vercel-build": "node vercel-build.mjs",
-    "start": "vite preview",
-    "vercel-dev": "vite --port $PORT",
-    "vercel-deploy": "vercel --prod"
+    "postinstall": "echo \"Skipping postinstall for Vercel\"",
+    "start": "vite preview --port $PORT",
+    "vercel-build": "vite build --mode production"
   },
   "dependencies": {
     "@emotion/babel-plugin": "^11.11.0",

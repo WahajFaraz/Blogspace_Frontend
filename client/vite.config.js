@@ -21,12 +21,10 @@ export default defineConfig(({ mode }) => {
     base: base,
     define: {
       'process.env': {},
-      'import.meta.env.VITE_API_BASE_URL': JSON.stringify(
-        env.VITE_API_BASE_URL || 
-        (isProduction 
-          ? 'http://localhost:5173/'
-          : 'https://blogs-backend-ebon.vercel.app/')
-      )
+      'import.meta.env': {
+        ...env,
+        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app/')
+      }
     },
     plugins: [
       react({
