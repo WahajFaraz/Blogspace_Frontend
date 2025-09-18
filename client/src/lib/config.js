@@ -5,7 +5,7 @@ export const API_BASE_URL = rawUrl.replace(/\/+$/, '');
 export const config = {
   API_BASE_URL,
   endpoints: {
-    blogs: 'blogs',
+    blogs: '/blogs',
     users: '/users',
     media: '/media'
   }
