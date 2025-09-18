@@ -2,11 +2,16 @@ import { API_BASE_URL } from './config';
 
 // Helper function to create a properly formatted URL
 const createApiUrl = (path) => {
-  // Remove any leading/trailing slashes from the base URL
+  // Remove any leading/trailing slashes from the base URL and path
   const base = API_BASE_URL.replace(/\/+$/, '');
-  // Ensure the path starts with a single slash
-  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
-  return `${base}${normalizedPath}`;
+  const cleanPath = path.replace(/^\/+/, '');
+  
+  // Check if the base already includes the path to avoid duplication
+  if (base.endsWith(cleanPath)) {
+    return base;
+  }
+  
+  return `${base}/${cleanPath}`;
 };
 
 const api = {
@@ -54,11 +59,15 @@ const api = {
   // Blog endpoints
   getBlogs: async (params = '') => {
     // Create URL with proper path
-    const url = new URL(createApiUrl('/api/v1/blogs'));
+    const baseUrl = API_BASE_URL.replace(/\/+$/, ''); // Remove trailing slashes
+    const endpoint = '/blogs';
     
-    // Add query parameters if any
-    if (params.startsWith('?')) {
-      const searchParams = new URLSearchParams(params.slice(1));
+    // Construct URL with proper handling of query parameters
+    const url = new URL(`${baseUrl}${endpoint}`);
+    
+    // Parse and add query parameters if any
+    if (params) {
+      const searchParams = new URLSearchParams(params.startsWith('?') ? params.slice(1) : params);
       searchParams.forEach((value, key) => {
         url.searchParams.append(key, value);
       });
