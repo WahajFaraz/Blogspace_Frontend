@@ -50,7 +50,7 @@ const BlogDetail = () => {
       }
 
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
         headers
@@ -79,7 +79,7 @@ const BlogDetail = () => {
     try {
       setLiking(true);
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app' 
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/like`, {
         method: 'POST',
@@ -119,7 +119,7 @@ const BlogDetail = () => {
     try {
       setSubmittingComment(true);
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/comments`, {
         method: 'POST',
@@ -151,7 +151,7 @@ const BlogDetail = () => {
     try {
       setDeleting(true);
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
         method: 'DELETE',
