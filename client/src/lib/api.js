@@ -1,21 +1,18 @@
+import { getBlogsUrl } from './urlUtils';
 import { API_BASE_URL, config } from './config';
 
 // Helper function to create a properly formatted URL
 const createApiUrl = (endpoint) => {
-  // Remove any leading slashes from the endpoint
+  // This is a fallback, but we'll use the new URL utility functions directly
+  const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
   const cleanEndpoint = endpoint.replace(/^\/+/, '');
-  
-  // Construct the full URL
-  const url = new URL(`${API_BASE_URL}/${cleanEndpoint}`);
-  
-  // Return the properly formatted URL string
-  return url.toString();
+  return `${baseUrl}/api/v1/${cleanEndpoint}`.replace(/([^:]\/)\/+/g, '$1');
 };
 
 const api = {
   // Auth endpoints
   login: async (credentials) => {
-    const response = await fetch(createApiUrl('api/v1/users/login'), {
+    const response = await fetch(createApiUrl('users/login'), {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -56,23 +53,22 @@ const api = {
 
   // Blog endpoints
   getBlogs: async (params = '') => {
-    // Create the base URL without query parameters
-    const baseUrl = createApiUrl('blogs');
-    const url = new URL(baseUrl);
-    
-    // Add query parameters if any
+    // Parse the params string into an object
+    const paramsObj = {};
     if (params) {
       const searchParams = new URLSearchParams(
         params.startsWith('?') ? params.slice(1) : params
       );
       searchParams.forEach((value, key) => {
-        url.searchParams.append(key, value);
+        paramsObj[key] = value;
       });
     }
 
-    console.log('Fetching blogs from:', url.toString());
+    // Use the new URL utility function
+    const url = getBlogsUrl(paramsObj);
+    console.log('Fetching blogs from:', url);
 
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       method: 'GET',
       credentials: 'include',
       headers: {
