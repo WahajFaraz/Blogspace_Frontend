@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       console.log('Fetching user profile with token:', token.substring(0, 10) + '...');
       
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app' 
         : '';
         
       const response = await fetch(`${baseUrl}/api/v1/users/me`, {
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     try {
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app' 
         : '';
         
       const response = await fetch(`${baseUrl}/api/v1/users/login`, {
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/'
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
       
       const isFormData = userData instanceof FormData;
@@ -192,7 +192,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/' 
+        ? 'https://blogs-backend-ebon.vercel.app' 
         : '';
       
       // Clear local state first
@@ -225,7 +225,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/'
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
 
       const isFormData = updates instanceof FormData;
