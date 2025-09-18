@@ -223,7 +223,7 @@ const CreatePost = () => {
 
     try {
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app/'
+        ? 'https://blogs-backend-ebon.vercel.app'
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs`, {
         method: 'POST',
