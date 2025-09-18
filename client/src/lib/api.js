@@ -26,12 +26,27 @@ const api = {
 
   // Blog endpoints
   getBlogs: async (params = '') => {
-    const response = await fetch(`${API_BASE_URL}/blogs${params}`, {
+    // Ensure no double slashes in the URL
+    const url = new URL('/api/v1/blogs', API_BASE_URL);
+    
+    // Add query parameters if any
+    if (params.startsWith('?')) {
+      const searchParams = new URLSearchParams(params.slice(1));
+      searchParams.forEach((value, key) => {
+        url.searchParams.append(key, value);
+      });
+    }
+    
+    console.log('Fetching blogs from:', url.toString());
+    
+    const response = await fetch(url.toString(), {
+      method: 'GET',
       credentials: 'include',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      mode: 'cors'
     });
     
     if (!response.ok) {
