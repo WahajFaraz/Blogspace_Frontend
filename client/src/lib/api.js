@@ -1,18 +1,15 @@
-import { API_BASE_URL } from './config';
+import { API_BASE_URL, config } from './config';
 
 // Helper function to create a properly formatted URL
-const createApiUrl = (path) => {
-  // Remove any trailing slashes from base URL and leading slashes from path
-  const cleanBase = API_BASE_URL.replace(/\/+$/, '');
-  const cleanPath = path.replace(/^\/+/, '');
+const createApiUrl = (endpoint) => {
+  // Remove any leading slashes from the endpoint
+  const cleanEndpoint = endpoint.replace(/^\/+/, '');
   
-  // Construct the URL parts
-  const urlParts = [cleanBase, 'api/v1', cleanPath]
-    .filter(Boolean) // Remove any empty parts
-    .join('/'); // Join with single slashes
+  // Construct the full URL
+  const url = new URL(`${API_BASE_URL}/${cleanEndpoint}`);
   
-  // Ensure we don't have any double slashes in the final URL
-  return urlParts.replace(/([^:])\/\//g, '$1/');
+  // Return the properly formatted URL string
+  return url.toString();
 };
 
 const api = {
