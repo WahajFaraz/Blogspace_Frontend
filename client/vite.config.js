@@ -14,7 +14,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const isProduction = mode === 'production';
   
-  // Set base URL for assets
   const base = isProduction ? '/' : '/';
   
   return {
@@ -23,7 +22,7 @@ export default defineConfig(({ mode }) => {
       'process.env': {},
       'import.meta.env': {
         ...env,
-        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
+        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogspace-orpin.vercel.app')
       }
     },
     plugins: [
@@ -67,7 +66,7 @@ export default defineConfig(({ mode }) => {
       port: 5173,
       proxy: !isProduction ? {
         '/api/v1': {
-          target: 'https://blogspace-website-git-master-wahaj-farazs-projects.vercel.app/',
+          target: 'https://blogspace-orpin.vercel.app',
           changeOrigin: true,
           secure: false,
           rewrite: (path) => path.replace(/^\/api\/v1/, '/api/v1')
