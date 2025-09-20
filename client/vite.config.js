@@ -20,10 +20,7 @@ export default defineConfig(({ mode }) => {
     base: base,
     define: {
       'process.env': {},
-      'import.meta.env': {
-        ...env,
-        VITE_API_BASE_URL: JSON.stringify(env.VITE_API_BASE_URL || 'https://blogspace-orpin.vercel.app')
-      }
+      'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL || 'https://blogspace-orpin.vercel.app')
     },
     plugins: [
       react({
@@ -107,33 +104,6 @@ export default defineConfig(({ mode }) => {
             }
             return 'assets/[name]-[hash][extname]';
           },
-        },
-      },
-      sourcemap: !isProduction,
-      chunkSizeWarningLimit: 1000,
-      commonjsOptions: {
-        include: [/node_modules/],
-        transformMixedEsModules: true,
-        esmExternals: true,
-        requireReturnsDefault: 'auto'
-      },
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              if (id.includes('@radix-ui')) {
-                const pkg = id.split('node_modules/')[1].split('/').slice(0, 2).join('/');
-                return pkg;
-              }
-              if (id.includes('framer-motion')) return 'framer';
-              return 'vendor';
-            }
-          },
-          entryFileNames: 'assets/[name]-[hash].js',
-          chunkFileNames: 'assets/[name]-[hash].js',
-          assetFileNames: 'assets/[name]-[hash][extname]',
-          // Ensure proper module resolution
-          format: 'esm',
         },
       },
       minify: isProduction ? 'terser' : false,
