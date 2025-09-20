@@ -38,7 +38,8 @@
     "tailwindcss": "^3.3.3",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
-    "@tailwindcss/typography": "^0.5.9"
+    "@tailwindcss/typography": "^0.5.9",
+    "tailwindcss-animate": "^1.0.6"
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
@@ -52,7 +53,6 @@
     "eslint-plugin-react-refresh": "^0.4.3",
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
-    "tailwindcss-animate": "^1.0.6",
     "terser": "^5.44.0",
     "typescript": "^5.2.2",
     "vite-plugin-compression": "^0.5.1"
