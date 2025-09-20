@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { createApiUrl } from '../lib/urlUtils';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '../components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
@@ -26,7 +27,7 @@ const FollowList = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/users/id/${userId}`);
+        const res = await fetch(createApiUrl(`users/id/${userId}`));
         if (!res.ok) throw new Error('User not found');
         const data = await res.json();
         setUser(data);
@@ -62,7 +63,7 @@ const FollowList = () => {
     setFollowingStatus(prev => ({ ...prev, [targetUserId]: !isFollowing })); // Optimistic update
 
     try {
-        const response = await fetch(`/api/users/${endpoint}/${targetUserId}`, {
+        const response = await fetch(createApiUrl(`users/${endpoint}/${targetUserId}`), {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
