@@ -6,7 +6,7 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
-    minify: 'terser',
+    minify: 'esbuild',
     rollupOptions: {
       output: {
         manualChunks: undefined,
@@ -17,5 +17,8 @@ export default defineConfig({
     'process.env': {},
     'import.meta.env.VITE_API_BASE_URL': JSON.stringify('https://blogspace-orpin.vercel.app'),
     'import.meta.env.DEV': JSON.stringify(false),
+  },
+  esbuild: {
+    target: 'es2020',
   },
 });
