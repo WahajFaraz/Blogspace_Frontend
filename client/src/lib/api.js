@@ -24,7 +24,7 @@ const api = {
   },
 
   register: async (userData) => {
-    const response = await fetch(createApiUrl('api/v1/users/register'), {
+    const response = await fetch(createApiUrl('users/register'), {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -161,7 +161,7 @@ const api = {
 
   // Media upload
   uploadMedia: async (formData, token) => {
-    const response = await fetch(createApiUrl('api/v1/media/upload'), {
+    const response = await fetch(createApiUrl('media/upload'), {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
