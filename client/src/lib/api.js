@@ -98,7 +98,8 @@ const api = {
     }),
 
   createBlog: async (blogData, token) => {
-    const response = await fetch(createApiUrl('blogs'), {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+    const response = await fetch(`${baseUrl}/api/v1/blogs`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
