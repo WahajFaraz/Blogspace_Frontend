@@ -98,7 +98,7 @@ const api = {
     }),
 
   createBlog: async (blogData, token) => {
-    const response = await fetch(createApiUrl('api/v1/blogs'), {
+    const response = await fetch(createApiUrl('blogs'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
