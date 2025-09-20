@@ -39,7 +39,8 @@
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
     "@tailwindcss/typography": "^0.5.9",
-    "tailwindcss-animate": "^1.0.6"
+    "tailwindcss-animate": "^1.0.6",
+    "vite-plugin-compression": "^0.5.1"
   },
   "devDependencies": {
     "@types/node": "^20.8.10",
@@ -54,8 +55,7 @@
     "prettier": "^3.0.2",
     "prettier-plugin-tailwindcss": "^0.5.3",
     "terser": "^5.44.0",
-    "typescript": "^5.2.2",
-    "vite-plugin-compression": "^0.5.1"
+    "typescript": "^5.2.2"
   },
   "engines": {
     "node": "22.x",
