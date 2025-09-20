@@ -1,13 +1,5 @@
-import { getBlogsUrl } from './urlUtils';
-import { API_BASE_URL, config } from './config';
-
-// Helper function to create a properly formatted URL
-const createApiUrl = (endpoint) => {
-  // This is a fallback, but we'll use the new URL utility functions directly
-  const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-  const cleanEndpoint = endpoint.replace(/^\/+/, '');
-  return `${baseUrl}/api/v1/${cleanEndpoint}`.replace(/([^:]\/)\/+/g, '$1');
-};
+import { createApiUrl, getBlogsUrl } from './urlUtils';
+import { config } from './config';
 
 const api = {
   // Auth endpoints
@@ -80,8 +72,7 @@ const api = {
   },
 
   getBlog: (id) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-    return fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+    return fetch(createApiUrl(`blogs/${id}`), {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -93,8 +84,7 @@ const api = {
   },
 
   createBlog: async (blogData, token) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-    const response = await fetch(`${baseUrl}/api/v1/blogs`, {
+    const response = await fetch(createApiUrl('blogs'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -115,8 +105,7 @@ const api = {
   },
 
   updateBlog: (id, blogData, token) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-    return fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+    return fetch(createApiUrl(`blogs/${id}`), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -130,8 +119,7 @@ const api = {
   },
 
   deleteBlog: async (id, token) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-    const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+    const response = await fetch(createApiUrl(`blogs/${id}`), {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
@@ -152,8 +140,7 @@ const api = {
 
   // User endpoints
   getCurrentUser: async (token) => {
-    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-    const response = await fetch(`${baseUrl}/api/v1/users/me`, {
+    const response = await fetch(createApiUrl('users/me'), {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
