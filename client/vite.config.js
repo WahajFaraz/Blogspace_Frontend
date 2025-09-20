@@ -20,7 +20,8 @@ export default defineConfig(({ mode }) => {
     base: base,
     define: {
       'process.env': {},
-      'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL || 'https://blogspace-orpin.vercel.app')
+      'import.meta.env.VITE_API_BASE_URL': JSON.stringify(env.VITE_API_BASE_URL || 'https://blogspace-orpin.vercel.app'),
+      'import.meta.env.DEV': JSON.stringify(mode === 'development')
     },
     plugins: [
       react({
