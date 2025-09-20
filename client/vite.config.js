@@ -8,9 +8,16 @@ export default defineConfig({
     sourcemap: false,
     minify: 'esbuild',
     rollupOptions: {
+      external: ['fsevents'],
       output: {
         manualChunks: undefined,
       },
+      onwarn(warning, warn) {
+        // Ignore fsevents warnings
+        if (warning.code === 'UNUSED_EXTERNAL_IMPORT' && warning.source === 'fsevents') return;
+        // Use default for other warnings
+        warn(warning);
+      }
     },
   },
   define: {
