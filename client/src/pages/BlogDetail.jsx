@@ -50,9 +50,6 @@ const BlogDetail = () => {
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const baseUrl = import.meta.env.DEV 
-        ? createApiUrl
-        : '';
       const response = await fetch(createApiUrl(`blogs/${id}`), {
         headers
       });
@@ -116,9 +113,6 @@ const BlogDetail = () => {
 
     try {
       setSubmittingComment(true);
-      const baseUrl = import.meta.env.DEV 
-        ? createApiUrl
-        : '';
       const response = await fetch(createApiUrl(`blogs/${id}/comments`), {
         method: 'POST',
         headers: {
@@ -148,9 +142,6 @@ const BlogDetail = () => {
 
     try {
       setDeleting(true);
-      const baseUrl = import.meta.env.DEV 
-        ? createApiUrl 
-        : '';
       const response = await fetch(createApiUrl(`blogs/${id}`), {
         method: 'DELETE',
         headers: {
