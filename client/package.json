@@ -15,12 +15,9 @@
     "format": "prettier --write .",
     "postinstall": "echo \"Skipping postinstall for Vercel\"",
     "start": "vite preview --port $PORT",
-    "vercel-build": "vite build --mode production"
+    "vercel-build": "npm ci && vite build --mode production"
   },
   "dependencies": {
-    "@emotion/babel-plugin": "^11.11.0",
-    "@emotion/react": "^11.11.1",
-    "@emotion/styled": "^11.11.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^1.2.2",
@@ -44,7 +41,7 @@
     "@types/react-dom": "^18.2.15",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.0.4",
+    "@vitejs/plugin-react": "^4.2.0",
     "autoprefixer": "^10.4.15",
     "eslint": "^8.45.0",
     "eslint-plugin-react": "^7.33.2",
@@ -57,11 +54,11 @@
     "tailwindcss-animate": "^1.0.6",
     "terser": "^5.44.0",
     "typescript": "^5.2.2",
-    "vite": "^4.4.11",
+    "vite": "^5.0.0",
     "vite-plugin-compression": "^0.5.1"
   },
   "engines": {
-    "node": "20.x",
+    "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },
   "browserslist": {
