@@ -79,10 +79,7 @@ const BlogDetail = () => {
 
     try {
       setLiking(true);
-      const baseUrl = import.meta.env.DEV 
-        ? createApiUrl 
-        : '';
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/like`, {
+      const response = await fetch(createApiUrl(`blogs/${id}/like`), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -122,7 +119,7 @@ const BlogDetail = () => {
       const baseUrl = import.meta.env.DEV 
         ? createApiUrl
         : '';
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/comments`, {
+      const response = await fetch(createApiUrl(`blogs/${id}/comments`), {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
