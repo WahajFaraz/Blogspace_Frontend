@@ -139,9 +139,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app'
-        : '';
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app';
       
       const isFormData = userData instanceof FormData;
       
@@ -234,7 +232,7 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       
       const baseUrl = import.meta.env.DEV 
-        ? 'https://blogs-backend-ebon.vercel.app'
+        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
         : '';
 
       const isFormData = updates instanceof FormData;
