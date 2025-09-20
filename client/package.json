@@ -13,9 +13,9 @@
     "preview:prod": "vite preview --port 4173 --host",
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
-    "postinstall": "echo \"Skipping postinstall for Vercel\"",
     "start": "vite preview --port $PORT",
-    "vercel-build": "npm ci && vite build --mode production"
+    "vercel-build": "npm install --legacy-peer-deps && vite build --mode production",
+    "build:simple": "vite build"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.0.4",
