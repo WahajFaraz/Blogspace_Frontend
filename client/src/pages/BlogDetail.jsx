@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { createApiUrl } from "../lib/urlUtils";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -50,9 +51,9 @@ const BlogDetail = () => {
       }
 
       const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
+        ? createApiUrl
         : '';
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+      const response = await fetch(createApiUrl(`blogs/${id}`), {
         headers
       });
 
@@ -79,7 +80,7 @@ const BlogDetail = () => {
     try {
       setLiking(true);
       const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app') 
+        ? createApiUrl 
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/like`, {
         method: 'POST',
@@ -119,7 +120,7 @@ const BlogDetail = () => {
     try {
       setSubmittingComment(true);
       const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
+        ? createApiUrl
         : '';
       const response = await fetch(`${baseUrl}/api/v1/blogs/${id}/comments`, {
         method: 'POST',
@@ -151,9 +152,9 @@ const BlogDetail = () => {
     try {
       setDeleting(true);
       const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app') 
+        ? createApiUrl 
         : '';
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+      const response = await fetch(createApiUrl(`blogs/${id}`), {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
