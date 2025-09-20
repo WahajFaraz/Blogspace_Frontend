@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { MediaUpload } from "../components/MediaUpload";
+import { createApiUrl } from "../lib/urlUtils";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -54,11 +55,7 @@ const EditPost = () => {
       setLoading(true);
       setError(null);
       
-      const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
-        : (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app');
-      
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+      const response = await fetch(createApiUrl(`blogs/${id}`), {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -211,11 +208,7 @@ const EditPost = () => {
     setError(null);
 
     try {
-      const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
-        : (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app');
-      
-      const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
+      const response = await fetch(createApiUrl(`blogs/${id}`), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
