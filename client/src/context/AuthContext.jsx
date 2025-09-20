@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createApiUrl } from "../lib/urlUtils";
 
 const AuthContext = createContext(undefined);
 
@@ -139,11 +140,9 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app';
-      
       const isFormData = userData instanceof FormData;
       
-      const response = await fetch(`${baseUrl}/api/v1/users/signup`, {
+      const response = await fetch(createApiUrl('users/signup'), {
         method: 'POST',
         headers: isFormData ? {} : {
           'Content-Type': 'application/json',
@@ -187,12 +186,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app';
       const currentToken = token || localStorage.getItem('token');
       
       try {
         // Call server-side logout with the full path
-        const response = await fetch(`${baseUrl}/api/v1/users/logout`, {
+        const response = await fetch(createApiUrl('users/logout'), {
           method: 'POST',
           credentials: 'include',
           headers: {
@@ -231,13 +229,9 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       
-      const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
-        : '';
-
       const isFormData = updates instanceof FormData;
       
-      const response = await fetch(`${baseUrl}/api/v1/users/profile`, {
+      const response = await fetch(createApiUrl('users/profile'), {
         method: 'PUT',
         headers: isFormData ? {
           'Authorization': `Bearer ${token}`,
