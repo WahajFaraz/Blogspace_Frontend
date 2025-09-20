@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BlogCard from "./BlogCard";
 import { motion } from "framer-motion";
-import { API_BASE_URL } from "../lib/config";
+import { createApiUrl } from "../lib/urlUtils";
 
 export const FeaturedSlider = () => {
   const [blogs, setBlogs] = useState([]);
@@ -11,7 +11,7 @@ export const FeaturedSlider = () => {
     const fetchFeaturedBlogs = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${API_BASE_URL}/blogs/featured`, {
+        const response = await fetch(createApiUrl('blogs/featured'), {
           method: 'GET',
           credentials: 'include',
           headers: {
