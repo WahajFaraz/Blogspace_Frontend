@@ -222,10 +222,11 @@ const CreatePost = () => {
     setError(null);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app/api/v1';
-      console.log('Creating blog post with URL:', `${baseUrl}/blogs`);
+      const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+      const apiUrl = `${baseUrl}/api/v1/blogs`;
+      console.log('Creating blog post with URL:', apiUrl);
       
-      const response = await fetch(`${baseUrl}/blogs`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
