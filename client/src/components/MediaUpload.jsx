@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X, Image, Video, File, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
+import { createApiUrl } from "../lib/urlUtils";
 
 export const MediaUpload = ({ 
   onMediaSelect, 
@@ -93,15 +94,11 @@ export const MediaUpload = ({
       const formData = new FormData();
       formData.append('file', file);
 
-      const baseUrl = import.meta.env.DEV 
-        ? (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app')
-        : (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app');
-        
-      let endpoint = `${baseUrl}/api/v1/media/upload-blog-media`;
+      let endpoint = createApiUrl('media/upload-blog-media');
       if (file.type.startsWith('image/')) {
-        endpoint = `${baseUrl}/api/v1/media/upload-image`;
+        endpoint = createApiUrl('media/upload-image');
       } else if (file.type.startsWith('video/')) {
-        endpoint = `${baseUrl}/api/v1/media/upload-video`;
+        endpoint = createApiUrl('media/upload-video');
       }
 
       const response = await fetch(endpoint, {
