@@ -77,17 +77,11 @@ const api = {
       },
       mode: 'cors'
     });
-    
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || 'Failed to fetch blogs');
-    }
-    
-    return response;
   },
 
-  getBlog: (id) => 
-    fetch(createApiUrl(`api/v1/blogs/${id}`), {
+  getBlog: (id) => {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+    return fetch(`${baseUrl}/api/v1/blogs/${id}`, {
       method: 'GET',
       credentials: 'include',
       headers: {
@@ -95,7 +89,8 @@ const api = {
         'Content-Type': 'application/json'
       },
       mode: 'cors'
-    }),
+    });
+  },
 
   createBlog: async (blogData, token) => {
     const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
@@ -119,8 +114,9 @@ const api = {
     return response;
   },
 
-  updateBlog: async (id, blogData, token) => {
-    const response = await fetch(createApiUrl(`api/v1/blogs/${id}`), {
+  updateBlog: (id, blogData, token) => {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+    return fetch(`${baseUrl}/api/v1/blogs/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -131,22 +127,16 @@ const api = {
       body: JSON.stringify(blogData),
       mode: 'cors'
     });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || 'Failed to update blog');
-    }
-    
-    return response;
   },
 
   deleteBlog: async (id, token) => {
-    const response = await fetch(createApiUrl(`api/v1/blogs/${id}`), {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+    const response = await fetch(`${baseUrl}/api/v1/blogs/${id}`, {
       method: 'DELETE',
       headers: {
-        'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
       },
       credentials: 'include',
       mode: 'cors'
@@ -162,7 +152,8 @@ const api = {
 
   // User endpoints
   getCurrentUser: async (token) => {
-    const response = await fetch(createApiUrl('api/v1/users/me'), {
+    const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
+    const response = await fetch(`${baseUrl}/api/v1/users/me`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
