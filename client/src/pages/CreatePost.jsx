@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { MediaUpload } from "../components/MediaUpload";
+import api from "../lib/api";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Textarea } from "../components/ui/textarea";
@@ -222,23 +223,12 @@ const CreatePost = () => {
     setError(null);
 
     try {
-      const baseUrl = (import.meta.env.VITE_API_BASE_URL || 'https://blogs-backend-ebon.vercel.app').replace(/\/+$/, '');
-      const apiUrl = `${baseUrl}/api/v1/blogs`;
-      console.log('Creating blog post with URL:', apiUrl);
-      
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      });
-
+      const response = await api.createBlog(formData, token);
       const data = await response.json();
-      console.log('Create blog response:', { status: response.status, data });
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to create post');
+      }
 
       if (response.ok) {
         setSuccess(true);
