@@ -41,9 +41,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('Fetching user profile with token:', token.substring(0, 10) + '...');
       
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-        
-      const response = await fetch(`${baseUrl}/api/v1/users/me`, {
+      const response = await fetch(createApiUrl('users/me'), {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -96,9 +94,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
-      const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
-        
-      const response = await fetch(`${baseUrl}/api/v1/users/login`, {
+      const response = await fetch(createApiUrl('users/login'), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
