@@ -3,6 +3,8 @@
   "private": true,
   "type": "module",
   "version": "1.0.0",
+  "main": "vite.config.js",
+  "module": "vite.config.js",
   "description": "Blogging Application with MERN Stack",
   "author": "",
   "license": "MIT",
@@ -14,7 +16,7 @@
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
     "start": "vite preview --port $PORT",
-    "vercel-build": "npm install --legacy-peer-deps && npx vite build --mode production",
+    "vercel-build": "npm install --legacy-peer-deps && npm run build",
     "build:simple": "vite build"
   },
   "dependencies": {
