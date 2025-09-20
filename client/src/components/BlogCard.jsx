@@ -6,6 +6,7 @@ import { Badge } from "./ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Heart, MessageCircle, Eye, Clock, Calendar } from "lucide-react";
 import { useState } from "react";
+import { createApiUrl } from "../lib/urlUtils";
 
 const BlogCard = ({ blog, index }) => {
   const { user, token, isAuthenticated } = useAuth();
@@ -31,8 +32,6 @@ const BlogCard = ({ blog, index }) => {
       return;
     }
 
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || "https://blogs-backend-ebon.vercel.app";
-
     const originalState = { ...likedState };
     setLikedState((prev) => ({
       isLiked: !prev.isLiked,
@@ -41,7 +40,7 @@ const BlogCard = ({ blog, index }) => {
 
     try {
       const response = await fetch(
-        `${baseUrl}/api/v1/blogs/${blog._id}/like`,
+        createApiUrl(`blogs/${blog._id}/like`),
         {
           method: "POST",
           headers: {
