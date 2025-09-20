@@ -31,7 +31,7 @@ const BlogCard = ({ blog, index }) => {
       return;
     }
 
-    const baseUrl = import.meta.env.DEV ? "https://blogs-backend-ebon.vercel.app" : "https://blogs-backend-ebon.vercel.app";
+    const baseUrl = import.meta.env.VITE_API_BASE_URL || "https://blogs-backend-ebon.vercel.app";
 
     const originalState = { ...likedState };
     setLikedState((prev) => ({
