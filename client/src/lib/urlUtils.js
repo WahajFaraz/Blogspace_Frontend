@@ -11,10 +11,12 @@ export const createApiUrl = (endpoint, params = {}) => {
   // Remove leading slashes from endpoint
   const cleanEndpoint = endpoint.replace(/^\/+/, '');
   
-  // Construct the full URL
-  const url = new URL(`${baseUrl}/api/v1/${cleanEndpoint}`);
+  // Ensure we don't have double slashes by properly constructing the path
+  const apiPath = `/api/v1/${cleanEndpoint}`.replace(/\/+/g, '/');
   
-  // Add query parameters if provided
+  // Construct the full URL
+  const url = new URL(baseUrl + apiPath);
+  
   if (params && Object.keys(params).length > 0) {
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -23,8 +25,7 @@ export const createApiUrl = (endpoint, params = {}) => {
     });
   }
   
-  // Return the URL string, ensuring no double slashes
-  return url.toString().replace(/([^:]\/)\/+/g, '$1');
+  return url.toString();
 };
 
 /**
