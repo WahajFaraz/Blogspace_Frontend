@@ -69,6 +69,8 @@ const api = {
       },
       mode: 'cors'
     });
+
+    return response;
   },
 
   getBlog: (id) => {
