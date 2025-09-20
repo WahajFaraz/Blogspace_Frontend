@@ -16,7 +16,7 @@
     "lint": "eslint . --ext js,jsx,ts,tsx --report-unused-disable-directives --max-warnings 0",
     "format": "prettier --write .",
     "start": "vite preview --port $PORT",
-    "vercel-build": "npm install --legacy-peer-deps && npm run build",
+    "vercel-build": "npm install --legacy-peer-deps --no-optional && npm run build",
     "build:simple": "vite build"
   },
   "dependencies": {
@@ -42,6 +42,7 @@
     "postcss": "^8.4.29",
     "@tailwindcss/typography": "^0.5.9",
     "tailwindcss-animate": "^1.0.6",
+    "path-browserify": "^1.0.1",
     "vite-plugin-compression": "^0.5.1"
   },
   "devDependencies": {
